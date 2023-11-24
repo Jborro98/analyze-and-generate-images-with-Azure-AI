@@ -1,25 +1,23 @@
+
 async function analyzeImage(imageUrl) {
-    const apiKey = '7936937cc9e940a285d4b51f8956b51f';
-    const endpoint = 'https://react-app-image-analyze.cognitiveservices.azure.com/vision/v4.0/analyze';
+  const apiKey = '7936937cc9e940a285d4b51f8956b51f'; // Replace with your Azure AI Vision API key
+  const endpoint = 'https://react-app-image-analyze.cognitiveservices.azure.com/computervision/imageanalysis:analyze?api-version=2023-02-01'; // Replace with your Azure AI Vision API endpoint
 
-    const params = new URLSearchParams({
-        visualFeatures: 'Categories,Description,Color',
-        details: 'Landmarks',
-        language: 'en',
-    });
+  const requestBody = {
+    url: imageUrl
+  };
 
-    const url = `${endpoint}?${params.toString()}`;
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Ocp-Apim-Subscription-Key': apiKey
+    },
+    body: JSON.stringify(requestBody)
+  });
 
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Ocp-Apim-Subscription-Key': apiKey,
-        },
-        body: JSON.stringify({ url: imageUrl }),
-    });
-
-    return response.json();
+  const result = await response.json();
+  return result;
 }
 
 export default analyzeImage;
