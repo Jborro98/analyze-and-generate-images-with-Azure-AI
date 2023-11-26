@@ -7,6 +7,7 @@ function App() {
   const [imageUrl, setImageUrl] = useState('');
   const [analysisResult, setAnalysisResult] = useState(null);
   const [generatedImageUrl, setGeneratedImageUrl] = useState('');
+  const [description, setDescription] = useState('');
 
   const handleButtonClick = (action) => {
     setProcessing(true);
@@ -20,24 +21,25 @@ function App() {
         })
         .catch((error) => {
           setProcessing(false);
-          // Agrega lógica para manejar errores durante el análisis
+          // Add logic to handle error during analysis
         });
     } else if (action === 'generate') {
-      // Pasa la descripción al llamar a generateImage
-      generateImage(imageUrl)
+      // Generate a new image based on the description
+      generateImage(description)
         .then((generatedUrl) => {
           setProcessing(false);
           setGeneratedImageUrl(generatedUrl);
         })
         .catch((error) => {
           setProcessing(false);
-          // Agrega lógica para manejar errores durante la generación de imágenes
+          // Add logic to handle error during image generation
         });
     }
   };
 
   const handleInputChange = (event) => {
     setImageUrl(event.target.value);
+    setDescription(event.target.value);
   };
 
   const DisplayResults = () => {

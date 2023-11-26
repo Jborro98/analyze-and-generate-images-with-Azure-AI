@@ -1,27 +1,25 @@
-// azure-image-generation.js
+import axios from 'axios';
+
+const apiKey = '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'; // Reemplaza con tu clave de API de OpenAI
 
 async function generateImage(description) {
-    try {
-        // Make a POST request to the Azure AI API
-        const response = await fetch('https://api.azureai.com/v2/images/generate', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': '8aaf863761b443449b7eb12f8cd3efa0' // Replace with your actual API key
-            },
-            body: JSON.stringify({
-                description: description
-            })
-        });
+  try {
+    const response = await axios.post('https://api.openai.com/v1/images:generate', {
+      prompt: `Generate an image that depicts: ${description}`,
+      n: 1, // Puedes ajustar este número según tus necesidades
+    }, {
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      }
+    });
 
-        // Process the response and return the generated image
-        const imageData = await response.json();
-        return imageData.url;  // Assuming the URL is present in the response
-    } catch (error) {
-        // Handle any errors that occur during the API call
-        console.error('Error generating image:', error);
-        throw error;
-    }
+    const imageUrl = response.data[0].url;
+    return imageUrl;
+  } catch (error) {
+    console.error('Error al generar la imagen:', error.message);
+    throw error;
+  }
 }
 
 export default generateImage;
